@@ -16,6 +16,12 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <string name="statusbar">Statusbar</string>
+
+    <!-- Hazy version -->
+    <string name="hazy_version">Hazy version</string>
+    <string name="hazy_version_default">Unknown</string>
+
     <!-- tap-to-sleep -->
     <string name="double_tap_to_sleep_title">Double-tap to sleep</string>
     <string name="double_tap_to_sleep_summary">Double-tap on the status bar to turn off the display</string>
@@ -67,4 +73,32 @@
     <string name="notification_light_voicemail_title">Voicemail</string>
     <string name="notification_light_screen_on">Lights with screen on</string>
 
+    <!-- Profiles -->
+    <string name="profile_reset_title">Reset</string>
+    <string name="profiles_add">Add</string>
+    <string name="profile_choose_app">Choose app</string>
+    <string name="profile_applist_title">Apps</string>
+    <string name="picker_activities">Activities</string>
+    <string name="select_custom_app_title">Select custom app</string>
+    <string name="select_custom_activity_title">Select custom activity</string>
+
+    <string name="display_category_led_title">LED lights</string>
+    <string name="battery_title">Battery</string>
+    <string name="battery2_summary">Customize battery icons and percentage</string>
+
+    <!-- Status bar - Battery -->
+    <string name="status_bar_battery_style_title">Battery status style</string>
+    <string name="status_bar_battery_style_icon_portrait">Icon portrait</string>
+    <string name="status_bar_battery_style_icon_landscape">Icon landscape</string>
+    <string name="status_bar_battery_style_circle">Circle</string>
+    <string name="status_bar_battery_style_dotted_circle">Dotted circle</string>
+    <string name="status_bar_battery_style_text">Text</string>
+    <string name="status_bar_battery_style_hidden">Hidden</string>
+
+    <!-- Battery percentage -->
+    <string name="status_bar_battery_percentage_title">Show battery percentage</string>
+    <string name="status_bar_battery_percentage_dialog_title">Battery percentage</string>
+    <string name="status_bar_battery_percentage_default">Hidden (default)</string>
+    <string name="status_bar_battery_percentage_text_inside">Inside the icon</string>
+    <string name="status_bar_battery_percentage_text_next">Next to the icon</string>
 </resources>
