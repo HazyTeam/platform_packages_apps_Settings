@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 The Hazy Project
+ * Copyright (C) 2012 The CyanogenMod Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
+import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -100,7 +101,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
         Resources resources = getResources();
 
         PreferenceGroup mGeneralPrefs = (PreferenceGroup) prefSet.findPreference("general_section");
-        PreferenceGroup mAdvancedPrefs = (PreferenceGroup) prefSet.findPreference("advanced_section");
         PreferenceGroup mPhonePrefs = (PreferenceGroup) prefSet.findPreference("phone_list");
 
         mMultiColorNotificationLed = resources.getBoolean(
@@ -113,17 +113,13 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
             }
 
         // Get the system defined default notification color
-        mDefaultColor = resources.getColor(com.android.internal.R.color.config_defaultNotificationColor);
-        if (mDefaultColor == Color.WHITE) {
-            // We cannot properly show white in the UI, change it to off white (#eeeeee)
-            mDefaultColor = 0xFFEEEEEE;
-        }
+        mDefaultColor =
+                resources.getColor(com.android.internal.R.color.config_defaultNotificationColor);
 
         mDefaultLedOn = resources.getInteger(
                 com.android.internal.R.integer.config_defaultNotificationLedOn);
         mDefaultLedOff = resources.getInteger(
                 com.android.internal.R.integer.config_defaultNotificationLedOff);
-
         mEnabledPref = (SwitchPreference)
                 findPreference(Settings.System.NOTIFICATION_LIGHT_PULSE);
         mEnabledPref.setOnPreferenceChangeListener(this);
@@ -131,7 +127,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
         mDefaultPref = (ApplicationLightPreference) findPreference(DEFAULT_PREF);
         mDefaultPref.setOnPreferenceChangeListener(this);
 
-        // Advanced light settings
         mScreenOnLightsPref = (SwitchPreference)
                 findPreference(Settings.System.NOTIFICATION_LIGHT_SCREEN_ON);
         mScreenOnLightsPref.setOnPreferenceChangeListener(this);
@@ -163,7 +158,7 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
         if (mMultiColorNotificationLed) {
             setHasOptionsMenu(true);
         } else {
-            mAdvancedPrefs.removePreference(mCustomEnabledPref);
+            mGeneralPrefs.removePreference(mCustomEnabledPref);
             prefSet.removePreference(mPhonePrefs);
             prefSet.removePreference(mApplicationPrefList);
             resetColors();
@@ -172,7 +167,7 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
 
     @Override
     protected int getMetricsCategory() {
-        return MetricsLogger.NOTIFICATION_LIGHT_SETTINGS;
+        return MetricsLogger.DISPLAY;
     }
 
     @Override
@@ -440,7 +435,7 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         mMenu = menu;
-        mMenu.add(0, MENU_ADD, 0, R.string.profiles_add)
+        mMenu.add(0, MENU_ADD, 0, R.string.add)
                 .setIcon(R.drawable.ic_menu_add_white)
                 .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
     }
@@ -472,8 +467,7 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
             case DIALOG_APPS:
                 final ListView list = new ListView(getActivity());
                 list.setAdapter(mPackageAdapter);
-
-                builder.setTitle(R.string.profile_choose_app);
+                builder.setTitle(R.string.choose_app);
                 builder.setView(list);
                 dialog = builder.create();
 
