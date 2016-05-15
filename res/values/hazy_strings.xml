@@ -17,6 +17,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     
     <string name="statusbar">Statusbar</string>
+    <string name="hazy:display">Display</string>
 
     <!-- Hazy version -->
     <string name="hazy_version">Hazy version</string>
@@ -157,5 +158,9 @@
     <!-- OneHandMode -->
     <string name="one_hand_mode_title">One Hand Mode</string>
     <string name="one_hand_mode_summary">Enable One Hand Mode</string>
+
+    <!-- Three finger gesture -->
+    <string name="three_finger_gesture">Three finger screenshot</string>
+    <string name="three_finger_gesture_summary">Swipe three fingers across the screen to screenshot</string>
 
 </resources>

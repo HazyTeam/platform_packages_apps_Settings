@@ -62,6 +62,7 @@ public class HazySettings extends SettingsPreferenceFragment implements
     private static final String SMART_PULLDOWN = "smart_pulldown";
     private static final String STATUS_BAR_QUICK_QS_PULLDOWN = "status_bar_quick_qs_pulldown";
     private static final String SWITCH_LAST_APP = "switch_last_app";
+    private static final String THREE_FINGER_GESTURE = "three_finger_gesture";
     private static final String VOLBTN_MUSIC_CONTROLS = "volbtn_music_controls";
 
     private WarnedListPreference mFontSizePref;
@@ -74,6 +75,7 @@ public class HazySettings extends SettingsPreferenceFragment implements
     private SwitchPreference mOneHandMode;
     private SwitchPreference mTapToSleepPreference;
     private SwitchPreference mSwitchLastApp;
+    private SwitchPreference mThreeFingerGesture;
     private SwitchPreference mVolBtnMusicControls;
 
     @Override
@@ -93,6 +95,7 @@ public class HazySettings extends SettingsPreferenceFragment implements
         mTapToSleepPreference = (SwitchPreference) findPreference(DOUBLE_TAP_SLEEP_GESTURE);
         mSwitchLastApp = (SwitchPreference) findPreference(SWITCH_LAST_APP);
         mVolBtnMusicControls = (SwitchPreference) findPreference(VOLBTN_MUSIC_CONTROLS);
+        mThreeFingerGesture = (SwitchPreference) findPreference(THREE_FINGER_GESTURE);
 
         // Quick pulldown
         mQuickPulldown = (ListPreference) findPreference(STATUS_BAR_QUICK_QS_PULLDOWN);
@@ -147,6 +150,13 @@ public class HazySettings extends SettingsPreferenceFragment implements
                 Settings.System.ONE_HAND_MODE, 0) == 1);
             mOneHandMode.setOnPreferenceChangeListener(this);
         }
+
+        // Three-finger gesture
+        if (mThreeFingerGesture != null) {
+            mThreeFingerGesture.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.THREE_FINGER_GESTURE,0) == 1);
+            mThreeFingerGesture.setOnPreferenceChangeListener(this);
+        }
     }
 
     @Override
@@ -187,6 +197,10 @@ public class HazySettings extends SettingsPreferenceFragment implements
                     Settings.System.QS_SMART_PULLDOWN,
                     smartPulldown);
             updateSmartPulldownSummary(smartPulldown);
+        }
+        if (preference == mThreeFingerGesture) {
+            boolean value = (Boolean) objValue;
+            Settings.System.putInt(getContentResolver(), THREE_FINGER_GESTURE, value ? 1: 0);
         }
         return true;
     }
