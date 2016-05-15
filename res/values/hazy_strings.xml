@@ -17,7 +17,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     
     <string name="statusbar">Statusbar</string>
-    <string name="hazy:display">Display</string>
+    <string name="hazy_display">Display</string>
 
     <!-- Hazy version -->
     <string name="hazy_version">Hazy version</string>
