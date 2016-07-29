@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.android.settings.inputmethod;
-
 import com.android.internal.logging.MetricsLogger;
 import com.android.settings.SettingsPreferenceFragment;
-
 import android.content.Context;
 import android.hardware.input.InputDeviceIdentifier;
 import android.hardware.input.InputManager;
@@ -29,11 +26,9 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.view.InputDevice;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 public class KeyboardLayoutPickerFragment extends SettingsPreferenceFragment
         implements InputDeviceListener {
     private InputDeviceIdentifier mInputDeviceIdentifier;
@@ -42,40 +37,32 @@ public class KeyboardLayoutPickerFragment extends SettingsPreferenceFragment
     private KeyboardLayout[] mKeyboardLayouts;
     private HashMap<CheckBoxPreference, KeyboardLayout> mPreferenceMap =
             new HashMap<CheckBoxPreference, KeyboardLayout>();
-
     /**
      * Intent extra: The input device descriptor of the keyboard whose keyboard
      * layout is to be changed.
      */
     public static final String EXTRA_INPUT_DEVICE_IDENTIFIER = "input_device_identifier";
-
     @Override
     protected int getMetricsCategory() {
         return MetricsLogger.INPUTMETHOD_KEYBOARD;
     }
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
         mInputDeviceIdentifier = getActivity().getIntent().getParcelableExtra(
                 EXTRA_INPUT_DEVICE_IDENTIFIER);
         if (mInputDeviceIdentifier == null) {
             getActivity().finish();
         }
-
         mIm = (InputManager)getSystemService(Context.INPUT_SERVICE);
         mKeyboardLayouts = mIm.getKeyboardLayouts();
         Arrays.sort(mKeyboardLayouts);
         setPreferenceScreen(createPreferenceHierarchy());
     }
-
     @Override
     public void onResume() {
         super.onResume();
-
         mIm.registerInputDeviceListener(this, null);
-
         InputDevice inputDevice =
                 mIm.getInputDeviceByDescriptor(mInputDeviceIdentifier.getDescriptor());
         if (inputDevice == null) {
@@ -83,18 +70,14 @@ public class KeyboardLayoutPickerFragment extends SettingsPreferenceFragment
             return;
         }
         mInputDeviceId = inputDevice.getId();
-
         updateCheckedState();
     }
-
     @Override
     public void onPause() {
         mIm.unregisterInputDeviceListener(this);
         mInputDeviceId = -1;
-
         super.onPause();
     }
-
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
             Preference preference) {
@@ -115,29 +98,24 @@ public class KeyboardLayoutPickerFragment extends SettingsPreferenceFragment
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
-
     @Override
     public void onInputDeviceAdded(int deviceId) {
     }
-
     @Override
     public void onInputDeviceChanged(int deviceId) {
         if (mInputDeviceId >= 0 && deviceId == mInputDeviceId) {
             updateCheckedState();
         }
     }
-
     @Override
     public void onInputDeviceRemoved(int deviceId) {
         if (mInputDeviceId >= 0 && deviceId == mInputDeviceId) {
             getActivity().finish();
         }
     }
-
     private PreferenceScreen createPreferenceHierarchy() {
         PreferenceScreen root = getPreferenceManager().createPreferenceScreen(getActivity());
         Context context = getActivity();
-
         for (KeyboardLayout layout : mKeyboardLayouts) {
             CheckBoxPreference pref = new CheckBoxPreference(context);
             pref.setTitle(layout.getLabel());
@@ -147,12 +125,10 @@ public class KeyboardLayoutPickerFragment extends SettingsPreferenceFragment
         }
         return root;
     }
-
     private void updateCheckedState() {
         String[] enabledKeyboardLayouts = mIm.getKeyboardLayoutsForInputDevice(
                 mInputDeviceIdentifier);
         Arrays.sort(enabledKeyboardLayouts);
-
         for (Map.Entry<CheckBoxPreference, KeyboardLayout> entry : mPreferenceMap.entrySet()) {
             entry.getKey().setChecked(Arrays.binarySearch(enabledKeyboardLayouts,
                     entry.getValue().getDescriptor()) >= 0);
